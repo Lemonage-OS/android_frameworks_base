@@ -77,8 +77,11 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
 
     static final String TAG = "ScrimController";
     static final String TAG_CUSTOM = "ScrimControllerDebugExtra";
+
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
     private static final boolean DEBUG_CUSTOM = SystemProperties.getBoolean("persist.sys.debug", false);
+
+    private static final boolean OVERRIDE_THEME_COLORS = SystemProperties.getBoolean("persist.sys.scrim.override_theme_colors", false);
 
     /**
      * General scrim animation duration.
@@ -992,8 +995,10 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
         dlog("updateThemeColors: defaultColor = " + defaultColor);
         int defaultColor2 = Utils.getColorAccent(mScrimBehind.getContext()).getDefaultColor();
         dlog("updateThemeColors: defaultColor2 = " + defaultColor2);
-        mColors.setMainColor(defaultColor);
-        mColors.setSecondaryColor(defaultColor2);
+        int customColor = SystemProperties.getInt("persist.sys.scrim.custom_color", -1493172224);
+        int customColor2 = SystemProperties.getInt("persist.sys.scrim.custom_color_2", -19288);
+        mColors.setMainColor(OVERRIDE_THEME_COLORS ? customColor : defaultColor);
+        mColors.setSecondaryColor(OVERRIDE_THEME_COLORS ? customColor2 : defaultColor2);
         ColorExtractor.GradientColors gradientColors = mColors;
         boolean supportsDarkText = ColorUtils.calculateContrast(gradientColors.getMainColor(), -1) > 4.5d;
         gradientColors.setSupportsDarkText(supportsDarkText);
