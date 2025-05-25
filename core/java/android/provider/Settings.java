@@ -9071,6 +9071,12 @@ public final class Settings {
                 "reminder_exp_learning_event_count";
 
         /**
+         * Whether to enable wallpaper zooming
+         * @hide
+         */
+        public static final String ENABLE_WALLPAPER_ZOOM = "enable_wallpaper_zoom";
+
+        /**
          * These entries are considered common between the personal and the managed profile,
          * since the managed profile doesn't get to change them.
          */
