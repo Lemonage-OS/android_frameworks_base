@@ -40,6 +40,8 @@ import android.os.Debug;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.SystemClock;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.ArraySet;
 import android.util.MathUtils;
 import android.util.Slog;
@@ -813,9 +815,11 @@ class WallpaperController {
     }
 
     private float zoomOutToScale(float zoom) {
-        return MathUtils.lerp(1, mMaxWallpaperScale, 1 - zoom);
-    }
-
+        boolean wallpaperZoomEnabled = Settings.Secure.getIntForUser(
+                mService.mContext.getContentResolver(), Settings.Secure.ENABLE_WALLPAPER_ZOOM,
+                1, UserHandle.USER_CURRENT) == 1;
+        return MathUtils.lerp(1, wallpaperZoomEnabled ? mMaxWallpaperScale : 1.0f, 1 - zoom);
+   }
     void dump(PrintWriter pw, String prefix) {
         pw.print(prefix); pw.print("displayId="); pw.println(mDisplayContent.getDisplayId());
         pw.print(prefix); pw.print("mWallpaperTarget="); pw.println(mWallpaperTarget);

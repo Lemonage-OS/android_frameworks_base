@@ -691,6 +691,8 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private ActivityIntentHelper mActivityIntentHelper;
 
+    private float maxWallpaperZoom;
+
     /**
      * Public constructor for StatusBar.
      *
@@ -1225,8 +1227,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         BackDropView backdrop = mNotificationShadeWindowView.findViewById(R.id.backdrop);
         mMediaManager.setup(backdrop, backdrop.findViewById(R.id.backdrop_front),
                 backdrop.findViewById(R.id.backdrop_back), mScrimController, mLockscreenWallpaper);
-        float maxWallpaperZoom = mContext.getResources().getFloat(
-                com.android.internal.R.dimen.config_wallpaperMaxScale);
+        updateMaxWallpaperZoom();
         mNotificationShadeDepthControllerLazy.get().addListener(depth -> {
             float scale = MathUtils.lerp(maxWallpaperZoom, 1f, depth);
             backdrop.setPivotX(backdrop.getWidth() / 2f);
@@ -2048,17 +2049,17 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
-            /*resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.XXX),
-                    false, this, UserHandle.USER_ALL);*/
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.ENABLE_WALLPAPER_ZOOM),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            /*if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.XXX))) {
-                doXXX();
-            }*/
+            if (uri.equals(Settings.Secure.getUriFor(
+                    Settings.Secure.ENABLE_WALLPAPER_ZOOM))) {
+                updateMaxWallpaperZoom();
+            }
         }
 
         public void update() {
@@ -2066,9 +2067,13 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     }
 
-    /*private void doXXX() {
-
-    }*/
+    private void updateMaxWallpaperZoom() {
+        boolean wallpaperZoomEnabled = Settings.Secure.getIntForUser(
+                mContext.getContentResolver(), Settings.Secure.ENABLE_WALLPAPER_ZOOM,
+                1, UserHandle.USER_CURRENT) == 1;
+        maxWallpaperZoom = wallpaperZoomEnabled ? mContext.getResources().getFloat(
+                com.android.internal.R.dimen.config_wallpaperMaxScale) : 1.0f;
+    }
 
     /**
      * All changes to the status bar and notifications funnel through here and are batched.
