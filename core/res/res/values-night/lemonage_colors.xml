@@ -18,11 +18,7 @@
   -->
 <resources>
 
-    <color name="monet_background_lStar_6">#131315</color>
-    <color name="monet_background_lStar_9">#19191c</color>
-    <color name="monet_toast_background_lStar_14">#222428</color>
-
-    <color name="toast_background">@color/white</color>
-    <color name="toast_text">#ff212121</color>
+    <color name="toast_background">@color/monet_toast_background_lStar_14</color>
+    <color name="toast_text">@color/white</color>
 
 </resources>
