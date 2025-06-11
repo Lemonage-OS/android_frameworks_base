@@ -54,12 +54,6 @@ public class AmbientDisplayTile extends QSTileImpl<BooleanState> {
     }
 
     @Override
-    protected void handleDestroy() {
-        super.handleDestroy();
-        mSetting.setListening(false);
-    }
-
-    @Override
     public boolean isAvailable() {
         String name = Build.IS_DEBUGGABLE ? SystemProperties.get("debug.doze.component") : null;
         if (TextUtils.isEmpty(name)) {
@@ -71,18 +65,6 @@ public class AmbientDisplayTile extends QSTileImpl<BooleanState> {
     @Override
     public BooleanState newTileState() {
         return new BooleanState();
-    }
-
-    @Override
-    public void handleSetListening(boolean listening) {
-        super.handleSetListening(listening);
-        mSetting.setListening(listening);
-    }
-
-    @Override
-    protected void handleUserSwitch(int newUserId) {
-        mSetting.setUserId(newUserId);
-        handleRefreshState(mSetting.getValue());
     }
 
     @Override
@@ -132,5 +114,10 @@ public class AmbientDisplayTile extends QSTileImpl<BooleanState> {
             return mContext.getString(
                     R.string.accessibility_quick_settings_ambient_display_changed_off);
         }
+    }
+
+    @Override
+    public void handleSetListening(boolean listening) {
+        // Do nothing
     }
 }
