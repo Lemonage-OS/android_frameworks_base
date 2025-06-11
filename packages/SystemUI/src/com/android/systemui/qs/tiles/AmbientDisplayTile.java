@@ -69,12 +69,19 @@ public class AmbientDisplayTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleClick() {
-        mSetting.setValue(mState.value ? 0 : 1);
+        setEnabled(!mState.value);
+        refreshState();
     }
 
     @Override
     public Intent getLongClickIntent() {
         return new Intent(Settings.ACTION_DISPLAY_SETTINGS);
+    }
+
+    private void setEnabled(boolean enabled) {
+        Settings.Secure.putInt(mContext.getContentResolver(),
+                Settings.Secure.DOZE_ENABLED,
+                enabled ? 1 : 0);
     }
 
     @Override
