@@ -18,10 +18,6 @@
   -->
 <resources>
 
-    <color name="monet_background_lStar_6">#131315</color>
-    <color name="monet_background_lStar_9">#19191c</color>
-    <color name="monet_qs_tile_inactive_background_lStar_18">#2c2c2e</color>
-
-    <color name="qs_tile_inactive_background">#eeeeee</color>
+    <color name="qs_tile_inactive_background">@color/monet_qs_tile_inactive_background_lStar_18</color>
 
 </resources>
