@@ -20,6 +20,7 @@
 
     <color name="monet_background_lStar_6">#131315</color>
     <color name="monet_background_lStar_9">#19191c</color>
+    <color name="monet_launcher_p404_color1_lStar_13">#212124</color>
     <color name="monet_toast_background_lStar_14">#222428</color>
 
     <color name="toast_background">@color/white</color>
