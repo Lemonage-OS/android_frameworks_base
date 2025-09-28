@@ -26,7 +26,6 @@ import android.app.AlarmManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.os.SystemProperties;
 import android.os.Trace;
 import android.util.Log;
 import android.util.MathUtils;
@@ -79,7 +78,6 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
     static final String TAG_CUSTOM = "ScrimControllerDebugExtra";
 
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
-    private static final boolean DEBUG_CUSTOM = SystemProperties.getBoolean("persist.sys.debug", false);
 
     /**
      * General scrim animation duration.
@@ -464,11 +462,9 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
     public void setQsExpansion(float fraction) {
         if (!isNaN(fraction) && mQsExpansion != fraction) {
             mQsExpansion = fraction;
-            dlog("setQsExpansion: mQsExpansion = " + mQsExpansion);
             ScrimState scrimState = mState;
             if ((scrimState == ScrimState.SHADE_LOCKED || scrimState == ScrimState.KEYGUARD || scrimState == ScrimState.PULSING || scrimState == ScrimState.BUBBLE_EXPANDED) && mExpansionAffectsAlpha) {
                 applyAndDispatchExpansion();
-                dlog("setQsExpansion: applyAndDispatchExpansion");
             }
         }
     }
@@ -521,9 +517,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
             float f = mQsExpansion;
             if (f > 0.0f) {
                 mBehindAlpha = MathUtils.lerp(mBehindAlpha, mDefaultScrimAlpha, f);
-                dlog("applyExpansionToAlpha: mBehindAlpha = " + mBehindAlpha);
                 mBehindTint = ColorUtils.blendARGB(mBehindTint, ScrimState.SHADE_LOCKED.getBehindTint(), mQsExpansion);
-                dlog("applyExpansionToAlpha: mBehindTint = " + mBehindTint);
             }
         }
         if (isNaN(mBehindAlpha) || isNaN(mInFrontAlpha)) {
@@ -990,15 +984,12 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
                            Color.blue(attrColor));
         //int attrColor = Utils.getColorAccent(mScrimBehind.getContext()).getDefaultColor();
         //int defaultColor = Color.argb(Math.round(Color.alpha(attrColor) * 0.45f), Color.red(attrColor), Color.green(attrColor), Color.blue(attrColor));
-        dlog("updateThemeColors: defaultColor = " + defaultColor);
         int defaultColor2 = Utils.getColorAccent(mScrimBehind.getContext()).getDefaultColor();
-        dlog("updateThemeColors: defaultColor2 = " + defaultColor2);
         mColors.setMainColor(-1493172224);
         mColors.setSecondaryColor(-19288);
         ColorExtractor.GradientColors gradientColors = mColors;
         boolean supportsDarkText = ColorUtils.calculateContrast(gradientColors.getMainColor(), -1) > 4.5d;
         gradientColors.setSupportsDarkText(supportsDarkText);
-        dlog("updateThemeColors: supportsDarkText = " + supportsDarkText);
         mNeedsDrawableColorUpdate = true;
     }
 
@@ -1134,9 +1125,5 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
             mNeedsDrawableColorUpdate = true;
             scheduleUpdate();
         }
-    }
-
-    public static void dlog(String msg) {
-        if (DEBUG_CUSTOM) Log.d(TAG_CUSTOM, msg);
     }
 }
