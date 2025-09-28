@@ -977,19 +977,11 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
     private void updateThemeColors() {
         ScrimView scrimView = mScrimBehind;
         if (scrimView == null) return;
-        int attrColor = Utils.getColorAttr(scrimView.getContext(), android.R.attr.textColorPrimaryInverse).getDefaultColor();
-        int defaultColor = Color.argb(Math.round(Color.alpha(attrColor) * 0.75f), 
-                           Color.red(attrColor),
-                           Color.green(attrColor),
-                           Color.blue(attrColor));
-        //int attrColor = Utils.getColorAccent(mScrimBehind.getContext()).getDefaultColor();
-        //int defaultColor = Color.argb(Math.round(Color.alpha(attrColor) * 0.45f), Color.red(attrColor), Color.green(attrColor), Color.blue(attrColor));
-        int defaultColor2 = Utils.getColorAccent(mScrimBehind.getContext()).getDefaultColor();
         mColors.setMainColor(-1493172224);
         mColors.setSecondaryColor(-19288);
         ColorExtractor.GradientColors gradientColors = mColors;
-        boolean supportsDarkText = ColorUtils.calculateContrast(gradientColors.getMainColor(), -1) > 4.5d;
-        gradientColors.setSupportsDarkText(supportsDarkText);
+        gradientColors.setSupportsDarkText(ColorUtils.calculateContrast(
+                gradientColors.getMainColor(), -1) > 4.5d);
         mNeedsDrawableColorUpdate = true;
     }
 
