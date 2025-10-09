@@ -43,6 +43,7 @@ import android.util.ArraySet;
 import android.util.Log;
 import android.util.SparseArray;
 
+import androidx.core.graphics.ColorUtils;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
@@ -507,7 +508,8 @@ public abstract class QSTileImpl<TState extends State> implements QSTile, Lifecy
                 return Utils.getDisabled(context,
                         Utils.getColorAttrDefaultColor(context, android.R.attr.textColorSecondary));
             case Tile.STATE_INACTIVE:
-                return Utils.getColorAttrDefaultColor(context, android.R.attr.textColorPrimary);
+                return ColorUtils.setAlphaComponent(Utils.getColorAttrDefaultColor(
+                        context, android.R.attr.textColorPrimary), 230);
             case Tile.STATE_ACTIVE:
                 return Utils.getColorAttrDefaultColor(context, android.R.attr.textColorPrimaryInverse);
             default:
